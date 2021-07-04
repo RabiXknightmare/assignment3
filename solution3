@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+public static int ShipWithinDays(int[] weights, int D)  
+{  
+    int minimumWeight = weights.Max();  
+    int maximumWeight = weights.Sum();  
+  
+    if (TotalDaysToShip(weights, minimumWeight) <= D)  
+        return minimumWeight;  
+      
+    int currentGuess;  
+    int bestGuess = -1;  
+  
+    while (minimumWeight <= maximumWeight)  
+    {  
+        currentGuess = (maximumWeight + minimumWeight) / 2;  
+        if (TotalDaysToShip(weights, currentGuess) <= D)  
+        {  
+            bestGuess = currentGuess;  
+            maximumWeight = currentGuess - 1;  
+        }  
+        else  
+            minimumWeight = currentGuess + 1;  
+    }  
+    return bestGuess;  
+}  
+private static int TotalDaysToShip(int[] weights, int capacity)  
+{  
+    int days = 1;  
+    int currentShip = 0;  
+    foreach (int weight in weights)  
+    {  
+        if (currentShip + weight > capacity)  
+        {  
+            currentShip = 0;  
+            days++;  
+        }  
+        currentShip += weight;  
+    }  
+    return days;  
+}
